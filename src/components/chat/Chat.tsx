@@ -5,6 +5,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { SpeechToText } from "../utils/SpeechToText";
 import AnalyseConversation from "./AnalyseConversation";
+import { SummarizeConversation } from "../../service/AIService";
 
 const Chat = () => {
   const [messages, setMessages] = React.useState<
@@ -14,11 +15,12 @@ const Chat = () => {
   const [isVoiceLoading, setVoiceIsLoading] = useState(false);
 
   const handleSendMessage = async (audio: Blob) => {
-    console.log("start");
+    console.log("start", audio);
 
     try {
       setVoiceIsLoading(true);
-      const text = await SpeechToText(audio);
+      const text = "test1";
+      // const text = await SpeechToText(audio);
 
       setMessages((prevMessages) => [
         ...prevMessages,

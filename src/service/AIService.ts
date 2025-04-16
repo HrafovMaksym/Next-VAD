@@ -1,17 +1,26 @@
-import { OpenAI } from "openai";
+// import { OpenAI } from "openai";
 
-const client = new OpenAI({
-  baseURL: process.env.AI_URL,
-  apiKey: process.env.HUGGIN_FACE_TOKEN,
-});
+// const client = new OpenAI({
+//   baseURL: "https://router.huggingface.co/together/v1",
+//   apiKey: process.env.HUGGIN_FACE_TOKEN,
+// });
+import { InferenceClient } from "@huggingface/inference";
 
-export async function SummarizeConversation() {
-  const chatCompletion = await client.chat.completions.create({
-    model: "accounts/fireworks/models/deepseek-v3",
+const client = new InferenceClient(`${process.env.HUGGIN_FACE_TOKEN}`);
+
+export async function SummarizeConversation(userText: string) {
+  const prompt = `You are a friendly and helpful voice assistant. You support natural, human-like conversation. 
+Answer the user's questions clearly and concisely, and feel free to ask follow-up questions to keep the conversation going. Speak in a calm and polite tone.
+And always respond on the user's language.
+User Text: ${userText}`;
+
+  const chatCompletion = await client.chatCompletion({
+    provider: "together",
+    model: "deepseek-ai/DeepSeek-V3",
     messages: [
       {
         role: "user",
-        content: "What is the capital of France?",
+        content: prompt,
       },
     ],
     max_tokens: 512,
